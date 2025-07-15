@@ -1,16 +1,37 @@
+import { useState } from "react";
 import type { Todo } from "../types/todo";
+import { useTodos } from "../contexts/TodoContext";
 
 interface TodoItemProps {
   todo: Todo;
 }
 
 export function TodoItem({ todo }: TodoItemProps) {
+  const [isUpdating, setIsUpdating] = useState(false);
+  const { toggleTodo, deleteTodo } = useTodos();
+
+  const handleToggle = async () => {
+    setIsUpdating(true);
+    try {
+      await toggleTodo(todo.id);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm("本当にこのTodoを削除しますか？")) {
+      await deleteTodo(todo.id);
+    }
+  };
+
   return (
     <div className={`todo-item ${todo.completed ? "completed" : ""}`}>
       <input
         type="checkbox"
         checked={todo.completed}
-        readOnly
+        onChange={handleToggle}
+        disabled={isUpdating}
         className="todo-checkbox"
       />
       <div className="todo-content">
@@ -20,9 +41,26 @@ export function TodoItem({ todo }: TodoItemProps) {
         )}
         <div className="todo-meta">
           <span className="todo-date">
-            Created: {todo.createdAt.toLocaleDateString()}
+            Created: {new Date(todo.createdAt).toLocaleDateString()}
           </span>
         </div>
+      </div>
+      <div className="todo-actions">
+        <button
+          onClick={handleDelete}
+          className="btn btn-danger"
+          disabled={isUpdating}
+          style={{ 
+            backgroundColor: '#dc3545', 
+            color: 'white', 
+            border: 'none',
+            padding: '0.25rem 0.5rem',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          削除
+        </button>
       </div>
     </div>
   );

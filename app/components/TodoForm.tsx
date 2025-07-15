@@ -5,23 +5,36 @@ import { useTodos } from "../contexts/TodoContext";
 export function TodoForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const { addTodo } = useTodos();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { addTodo, error } = useTodos();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    if (!title.trim()) {
+    if (!title.trim() || isSubmitting) {
       return;
     }
 
-    addTodo(title.trim(), description.trim() || undefined);
-    navigate("/");
+    setIsSubmitting(true);
+    try {
+      await addTodo(title.trim(), description.trim() || undefined);
+      navigate("/");
+    } catch (err) {
+      // Error is handled in the context
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="todo-form-container">
       <h1>新しいTodoを追加</h1>
+      {error && (
+        <div className="error-message" style={{ color: 'red', marginBottom: '1rem' }}>
+          {error}
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="todo-form">
         <div className="form-group">
           <label htmlFor="title">タイトル（必須）</label>
@@ -33,6 +46,7 @@ export function TodoForm() {
             placeholder="Todoのタイトルを入力"
             className="form-input"
             autoFocus
+            disabled={isSubmitting}
           />
         </div>
         
@@ -45,6 +59,7 @@ export function TodoForm() {
             placeholder="詳細な説明を入力"
             className="form-textarea"
             rows={4}
+            disabled={isSubmitting}
           />
         </div>
         
@@ -53,15 +68,16 @@ export function TodoForm() {
             type="button"
             onClick={() => navigate("/")}
             className="btn btn-secondary"
+            disabled={isSubmitting}
           >
             キャンセル
           </button>
           <button
             type="submit"
-            disabled={!title.trim()}
+            disabled={!title.trim() || isSubmitting}
             className="btn btn-primary"
           >
-            保存
+            {isSubmitting ? "保存中..." : "保存"}
           </button>
         </div>
       </form>
