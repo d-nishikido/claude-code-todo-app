@@ -1,21 +1,27 @@
 import type { ActionFunctionArgs } from "react-router";
-import { TodoService } from "../services/todoService";
+import { TodoService } from "../services/todoService.server";
 
 // POST /api/todos/:id/toggle - Toggle todo completion
 export async function action({ request, params }: ActionFunctionArgs) {
   if (request.method !== 'POST') {
-    return Response.json(
-      { success: false, error: 'Method not allowed' },
-      { status: 405 }
+    return new Response(
+      JSON.stringify({ success: false, error: 'Method not allowed' }),
+      { 
+        status: 405,
+        headers: { "Content-Type": "application/json" }
+      }
     );
   }
 
   const id = parseInt(params.id!);
   
   if (isNaN(id)) {
-    return Response.json(
-      { success: false, error: 'Invalid todo ID' },
-      { status: 400 }
+    return new Response(
+      JSON.stringify({ success: false, error: 'Invalid todo ID' }),
+      { 
+        status: 400,
+        headers: { "Content-Type": "application/json" }
+      }
     );
   }
 
@@ -23,18 +29,29 @@ export async function action({ request, params }: ActionFunctionArgs) {
     const todo = await TodoService.toggleTodo(id);
     
     if (!todo) {
-      return Response.json(
-        { success: false, error: 'Todo not found' },
-        { status: 404 }
+      return new Response(
+        JSON.stringify({ success: false, error: 'Todo not found' }),
+        { 
+          status: 404,
+          headers: { "Content-Type": "application/json" }
+        }
       );
     }
 
-    return Response.json({ data: todo, success: true });
+    return new Response(
+      JSON.stringify({ data: todo, success: true }),
+      {
+        headers: { "Content-Type": "application/json" }
+      }
+    );
   } catch (error) {
     console.error('Error toggling todo:', error);
-    return Response.json(
-      { success: false, error: 'Failed to toggle todo' },
-      { status: 500 }
+    return new Response(
+      JSON.stringify({ success: false, error: 'Failed to toggle todo' }),
+      { 
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      }
     );
   }
 }

@@ -1,4 +1,4 @@
-import { db } from './database';
+import { db } from './database.server';
 import type { Todo } from '../types/todo';
 
 export class TodoService {

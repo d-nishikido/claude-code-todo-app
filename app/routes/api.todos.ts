@@ -1,17 +1,22 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { TodoService } from "../services/todoService";
+import { TodoService } from "../services/todoService.server";
 import type { CreateTodoRequest } from "../types/api";
 
 // GET /api/todos - Get all todos
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const todos = await TodoService.getAllTodos();
-    return Response.json({ data: todos, success: true });
+    return new Response(JSON.stringify({ data: todos, success: true }), {
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     console.error('Error fetching todos:', error);
-    return Response.json(
-      { data: [], success: false, error: 'Failed to fetch todos' },
-      { status: 500 }
+    return new Response(
+      JSON.stringify({ data: [], success: false, error: 'Failed to fetch todos' }),
+      { 
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
     );
   }
 }
@@ -19,9 +24,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
 // POST /api/todos - Create new todo
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== 'POST') {
-    return Response.json(
-      { success: false, error: 'Method not allowed' },
-      { status: 405 }
+    return new Response(
+      JSON.stringify({ success: false, error: 'Method not allowed' }),
+      { 
+        status: 405,
+        headers: { "Content-Type": "application/json" },
+      }
     );
   }
 
@@ -29,9 +37,12 @@ export async function action({ request }: ActionFunctionArgs) {
     const body: CreateTodoRequest = await request.json();
     
     if (!body.title || !body.title.trim()) {
-      return Response.json(
-        { success: false, error: 'Title is required' },
-        { status: 400 }
+      return new Response(
+        JSON.stringify({ success: false, error: 'Title is required' }),
+        { 
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
       );
     }
 
@@ -40,12 +51,20 @@ export async function action({ request }: ActionFunctionArgs) {
       description: body.description?.trim()
     });
 
-    return Response.json({ data: todo, success: true });
+    return new Response(
+      JSON.stringify({ data: todo, success: true }),
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   } catch (error) {
     console.error('Error creating todo:', error);
-    return Response.json(
-      { success: false, error: 'Failed to create todo' },
-      { status: 500 }
+    return new Response(
+      JSON.stringify({ success: false, error: 'Failed to create todo' }),
+      { 
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
     );
   }
 }
