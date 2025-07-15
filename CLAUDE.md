@@ -101,11 +101,12 @@ CREATE TABLE todos (
 - Mock external dependencies in tests
 
 ## Git Workflow
-- Feature branches: `feature/description`
-- Bug fix branches: `fix/description`
-- Always create PR for main branch
-- Squash commits when merging
-- Delete branches after merge
+- **Plan**: `.claude/commands/plan-github-issue.md`
+- **Update Plan**: `.claude/commands/update-planed-issue.md`
+- **Fix**: `.claude/commands/fix-github-issue.md`
+- **Review**: `.claude/commands/review-local-changes.md`
+- **Apply Review**: `.claude/commands/apply-review-feedback.md`
+- **PR**: `.claude/commands/create-pr.md`
 
 ## Environment Variables
 ```env
