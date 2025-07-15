@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { TodoList } from '../../app/components/TodoList';
+import { TodoProvider } from '../../app/contexts/TodoContext';
+import { BrowserRouter } from 'react-router';
 
 vi.mock('../../app/components/TodoItem', () => ({
   TodoItem: ({ todo }: { todo: any }) => (
@@ -12,13 +14,25 @@ vi.mock('../../app/components/TodoItem', () => ({
 
 describe('TodoList', () => {
   it('renders the todo list heading', () => {
-    render(<TodoList />);
+    render(
+      <BrowserRouter>
+        <TodoProvider>
+          <TodoList />
+        </TodoProvider>
+      </BrowserRouter>
+    );
     
     expect(screen.getByText('Todo List')).toBeInTheDocument();
   });
 
   it('renders all todo items', () => {
-    render(<TodoList />);
+    render(
+      <BrowserRouter>
+        <TodoProvider>
+          <TodoList />
+        </TodoProvider>
+      </BrowserRouter>
+    );
     
     expect(screen.getByTestId('todo-item-1')).toBeInTheDocument();
     expect(screen.getByTestId('todo-item-2')).toBeInTheDocument();
@@ -27,7 +41,13 @@ describe('TodoList', () => {
   });
 
   it('renders todo titles correctly', () => {
-    render(<TodoList />);
+    render(
+      <BrowserRouter>
+        <TodoProvider>
+          <TodoList />
+        </TodoProvider>
+      </BrowserRouter>
+    );
     
     expect(screen.getByText('React Router v7の学習')).toBeInTheDocument();
     expect(screen.getByText('TypeScriptの型定義')).toBeInTheDocument();
@@ -36,7 +56,13 @@ describe('TodoList', () => {
   });
 
   it('does not show empty message when todos exist', () => {
-    render(<TodoList />);
+    render(
+      <BrowserRouter>
+        <TodoProvider>
+          <TodoList />
+        </TodoProvider>
+      </BrowserRouter>
+    );
     
     expect(screen.queryByText('Todoアイテムがありません')).not.toBeInTheDocument();
   });
