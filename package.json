@@ -9,7 +9,13 @@
     "typecheck": "react-router typegen && tsc",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "docker:up": "docker-compose up",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build",
+    "docker:logs": "docker-compose logs -f",
+    "db:migrate": "docker-compose exec db psql -U todouser -d tododb -f /docker-entrypoint-initdb.d/001_create_todos_table.sql",
+    "db:seed": "docker-compose exec app ./db/run-seeds.sh"
   },
   "dependencies": {
     "@react-router/node": "^7.5.3",
