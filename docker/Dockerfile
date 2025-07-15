@@ -10,7 +10,7 @@ RUN npm ci
 COPY . .
 
 # Expose port
-EXPOSE 3000
+EXPOSE 5173
 
 # Default command for development
 CMD ["npm", "run", "dev"]

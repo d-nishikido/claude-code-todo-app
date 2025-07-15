@@ -25,11 +25,11 @@ services:
       target: development
     environment:
       NODE_ENV: development
-      PORT: 3000
+      PORT: 5173
       DATABASE_URL: postgresql://todouser:todopass@db:5432/tododb
-      VITE_API_URL: http://localhost:3000/api
+      VITE_API_URL: http://localhost:5173/api
     ports:
-      - "3000:3000"
+      - "5173:5173"
     volumes:
       - .:/app
       - /app/node_modules
