@@ -31,7 +31,7 @@ export function TodoForm() {
     <div className="todo-form-container">
       <h1>新しいTodoを追加</h1>
       {error && (
-        <div className="error-message" style={{ color: 'red', marginBottom: '1rem' }}>
+        <div className="error-message">
           {error}
         </div>
       )}
