@@ -1,7 +1,26 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { TodoItem } from '../../app/components/TodoItem';
+import { TodoProvider } from '../../app/contexts/TodoContext';
 import type { Todo } from '../../app/types/todo';
+
+// Mock the API client
+vi.mock('../../app/utils/apiClient', () => ({
+  ApiClient: {
+    get: vi.fn().mockResolvedValue({
+      success: true,
+      data: []
+    }),
+    post: vi.fn().mockResolvedValue({
+      success: true,
+      data: {}
+    }),
+    delete: vi.fn().mockResolvedValue({
+      success: true,
+      data: {}
+    })
+  }
+}));
 
 describe('TodoItem', () => {
   const mockTodo: Todo = {
@@ -13,8 +32,16 @@ describe('TodoItem', () => {
     updatedAt: new Date('2025-01-01'),
   };
 
+  const renderWithProvider = (todo: Todo) => {
+    return render(
+      <TodoProvider>
+        <TodoItem todo={todo} />
+      </TodoProvider>
+    );
+  };
+
   it('renders todo item correctly', () => {
-    render(<TodoItem todo={mockTodo} />);
+    renderWithProvider(mockTodo);
     
     expect(screen.getByText('Test Todo')).toBeInTheDocument();
     expect(screen.getByText('Test description')).toBeInTheDocument();
@@ -22,7 +49,7 @@ describe('TodoItem', () => {
   });
 
   it('renders checkbox unchecked for incomplete todo', () => {
-    render(<TodoItem todo={mockTodo} />);
+    renderWithProvider(mockTodo);
     
     const checkbox = screen.getByRole('checkbox');
     expect(checkbox).not.toBeChecked();
@@ -30,7 +57,7 @@ describe('TodoItem', () => {
 
   it('renders checkbox checked for completed todo', () => {
     const completedTodo = { ...mockTodo, completed: true };
-    render(<TodoItem todo={completedTodo} />);
+    renderWithProvider(completedTodo);
     
     const checkbox = screen.getByRole('checkbox');
     expect(checkbox).toBeChecked();
@@ -38,14 +65,14 @@ describe('TodoItem', () => {
 
   it('applies completed class when todo is completed', () => {
     const completedTodo = { ...mockTodo, completed: true };
-    const { container } = render(<TodoItem todo={completedTodo} />);
+    const { container } = renderWithProvider(completedTodo);
     
     const todoItem = container.querySelector('.todo-item');
     expect(todoItem).toHaveClass('completed');
   });
 
   it('does not apply completed class when todo is incomplete', () => {
-    const { container } = render(<TodoItem todo={mockTodo} />);
+    const { container } = renderWithProvider(mockTodo);
     
     const todoItem = container.querySelector('.todo-item');
     expect(todoItem).not.toHaveClass('completed');
@@ -53,7 +80,7 @@ describe('TodoItem', () => {
 
   it('does not render description when not provided', () => {
     const todoWithoutDescription = { ...mockTodo, description: undefined };
-    render(<TodoItem todo={todoWithoutDescription} />);
+    renderWithProvider(todoWithoutDescription);
     
     expect(screen.queryByText('Test description')).not.toBeInTheDocument();
   });
