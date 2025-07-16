@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Todo } from "../types/todo";
 import { useTodos } from "../contexts/TodoContext";
+import { Tooltip } from "./Tooltip";
 
 interface TodoItemProps {
   todo: Todo;
@@ -27,13 +28,18 @@ export function TodoItem({ todo }: TodoItemProps) {
 
   return (
     <div className={`todo-item ${todo.completed ? "completed" : ""}`}>
-      <input
-        type="checkbox"
-        checked={todo.completed}
-        onChange={handleToggle}
-        disabled={isUpdating}
-        className="todo-checkbox"
-      />
+      <Tooltip 
+        content={todo.completed ? "完了を解除" : "完了にする"}
+        position="top"
+      >
+        <input
+          type="checkbox"
+          checked={todo.completed}
+          onChange={handleToggle}
+          disabled={isUpdating}
+          className="todo-checkbox"
+        />
+      </Tooltip>
       <div className="todo-content">
         <h3 className="todo-title">{todo.title}</h3>
         {todo.description && (
@@ -46,13 +52,18 @@ export function TodoItem({ todo }: TodoItemProps) {
         </div>
       </div>
       <div className="todo-actions">
-        <button
-          onClick={handleDelete}
-          className="btn btn-danger"
-          disabled={isUpdating}
+        <Tooltip 
+          content="このTodoを削除"
+          position="top"
         >
-          削除
-        </button>
+          <button
+            onClick={handleDelete}
+            className="btn btn-danger"
+            disabled={isUpdating}
+          >
+            削除
+          </button>
+        </Tooltip>
       </div>
     </div>
   );

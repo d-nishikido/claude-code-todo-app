@@ -1,0 +1,189 @@
+/* Tooltip Base Styles */
+.tooltip {
+  position: fixed;
+  z-index: 9999;
+  padding: 8px 12px;
+  background: #1e293b;
+  color: #f8fafc;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  pointer-events: none;
+  user-select: none;
+  max-width: 300px;
+  word-wrap: break-word;
+  opacity: 1;
+  transform: scale(1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: tooltip-fadeIn 0.2s ease-out forwards;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tooltip {
+    background: #1e293b;
+    color: #f8fafc;
+    border: 1px solid #334155;
+  }
+}
+
+@keyframes tooltip-fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Arrow styles for different positions */
+.tooltip::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.tooltip-top::before {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 6px 0 6px;
+  border-color: #1e293b transparent transparent transparent;
+}
+
+.tooltip-bottom::before {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 6px 6px 6px;
+  border-color: transparent transparent #1e293b transparent;
+}
+
+.tooltip-left::before {
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  border-width: 6px 0 6px 6px;
+  border-color: transparent transparent transparent #1e293b;
+}
+
+.tooltip-right::before {
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  border-width: 6px 6px 6px 0;
+  border-color: transparent #1e293b transparent transparent;
+}
+
+/* Dark mode arrow colors */
+@media (prefers-color-scheme: dark) {
+  .tooltip-top::before {
+    border-color: #1e293b transparent transparent transparent;
+  }
+  
+  .tooltip-bottom::before {
+    border-color: transparent transparent #1e293b transparent;
+  }
+  
+  .tooltip-left::before {
+    border-color: transparent transparent transparent #1e293b;
+  }
+  
+  .tooltip-right::before {
+    border-color: transparent #1e293b transparent transparent;
+  }
+}
+
+/* Tooltip trigger styles */
+.tooltip-trigger {
+  display: inline-block;
+  position: relative;
+}
+
+.tooltip-trigger:focus {
+  outline: none;
+}
+
+.tooltip-trigger:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tooltip {
+    max-width: 250px;
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .tooltip {
+    border: 2px solid currentColor;
+    font-weight: 600;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .tooltip {
+    animation: none;
+    transition: none;
+  }
+  
+  @keyframes tooltip-fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
+/* Special styling for error tooltips */
+.tooltip.tooltip-error {
+  background: #ef4444;
+  color: white;
+}
+
+.tooltip.tooltip-error::before {
+  border-color: #ef4444 transparent transparent transparent;
+}
+
+.tooltip.tooltip-error.tooltip-bottom::before {
+  border-color: transparent transparent #ef4444 transparent;
+}
+
+.tooltip.tooltip-error.tooltip-left::before {
+  border-color: transparent transparent transparent #ef4444;
+}
+
+.tooltip.tooltip-error.tooltip-right::before {
+  border-color: transparent #ef4444 transparent transparent;
+}
+
+/* Special styling for success tooltips */
+.tooltip.tooltip-success {
+  background: #10b981;
+  color: white;
+}
+
+.tooltip.tooltip-success::before {
+  border-color: #10b981 transparent transparent transparent;
+}
+
+.tooltip.tooltip-success.tooltip-bottom::before {
+  border-color: transparent transparent #10b981 transparent;
+}
+
+.tooltip.tooltip-success.tooltip-left::before {
+  border-color: transparent transparent transparent #10b981;
+}
+
+.tooltip.tooltip-success.tooltip-right::before {
+  border-color: transparent #10b981 transparent transparent;
+}
