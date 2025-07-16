@@ -1,0 +1,189 @@
+/* Tooltip Base Styles */
+.tooltip {
+  position: fixed;
+  z-index: 9999;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-text-primary);
+  color: var(--color-surface);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  box-shadow: var(--shadow-lg);
+  pointer-events: none;
+  user-select: none;
+  max-width: 300px;
+  word-wrap: break-word;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: tooltip-fadeIn 0.2s ease-out forwards;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tooltip {
+    background: var(--color-dark-surface-elevated);
+    color: var(--color-dark-text-primary);
+    border: 1px solid var(--color-dark-border);
+  }
+}
+
+@keyframes tooltip-fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Arrow styles for different positions */
+.tooltip::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.tooltip-top::before {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 6px 0 6px;
+  border-color: var(--color-text-primary) transparent transparent transparent;
+}
+
+.tooltip-bottom::before {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 6px 6px 6px;
+  border-color: transparent transparent var(--color-text-primary) transparent;
+}
+
+.tooltip-left::before {
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  border-width: 6px 0 6px 6px;
+  border-color: transparent transparent transparent var(--color-text-primary);
+}
+
+.tooltip-right::before {
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  border-width: 6px 6px 6px 0;
+  border-color: transparent var(--color-text-primary) transparent transparent;
+}
+
+/* Dark mode arrow colors */
+@media (prefers-color-scheme: dark) {
+  .tooltip-top::before {
+    border-color: var(--color-dark-surface-elevated) transparent transparent transparent;
+  }
+  
+  .tooltip-bottom::before {
+    border-color: transparent transparent var(--color-dark-surface-elevated) transparent;
+  }
+  
+  .tooltip-left::before {
+    border-color: transparent transparent transparent var(--color-dark-surface-elevated);
+  }
+  
+  .tooltip-right::before {
+    border-color: transparent var(--color-dark-surface-elevated) transparent transparent;
+  }
+}
+
+/* Tooltip trigger styles */
+.tooltip-trigger {
+  display: inline-block;
+  position: relative;
+}
+
+.tooltip-trigger:focus {
+  outline: none;
+}
+
+.tooltip-trigger:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tooltip {
+    max-width: 250px;
+    font-size: 0.8rem;
+    padding: var(--space-xs) var(--space-sm);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .tooltip {
+    border: 2px solid currentColor;
+    font-weight: 600;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .tooltip {
+    animation: none;
+    transition: none;
+  }
+  
+  @keyframes tooltip-fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
+/* Special styling for error tooltips */
+.tooltip.tooltip-error {
+  background: var(--color-error);
+  color: white;
+}
+
+.tooltip.tooltip-error::before {
+  border-color: var(--color-error) transparent transparent transparent;
+}
+
+.tooltip.tooltip-error.tooltip-bottom::before {
+  border-color: transparent transparent var(--color-error) transparent;
+}
+
+.tooltip.tooltip-error.tooltip-left::before {
+  border-color: transparent transparent transparent var(--color-error);
+}
+
+.tooltip.tooltip-error.tooltip-right::before {
+  border-color: transparent var(--color-error) transparent transparent;
+}
+
+/* Special styling for success tooltips */
+.tooltip.tooltip-success {
+  background: var(--color-success);
+  color: white;
+}
+
+.tooltip.tooltip-success::before {
+  border-color: var(--color-success) transparent transparent transparent;
+}
+
+.tooltip.tooltip-success.tooltip-bottom::before {
+  border-color: transparent transparent var(--color-success) transparent;
+}
+
+.tooltip.tooltip-success.tooltip-left::before {
+  border-color: transparent transparent transparent var(--color-success);
+}
+
+.tooltip.tooltip-success.tooltip-right::before {
+  border-color: transparent var(--color-success) transparent transparent;
+}
