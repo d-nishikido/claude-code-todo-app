@@ -50,14 +50,6 @@ export function TodoItem({ todo }: TodoItemProps) {
           onClick={handleDelete}
           className="btn btn-danger"
           disabled={isUpdating}
-          style={{ 
-            backgroundColor: '#dc3545', 
-            color: 'white', 
-            border: 'none',
-            padding: '0.25rem 0.5rem',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
         >
           削除
         </button>

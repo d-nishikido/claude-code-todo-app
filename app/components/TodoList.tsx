@@ -29,12 +29,11 @@ export function TodoList() {
       </div>
       
       {error && (
-        <div className="error-message" style={{ color: 'red', marginBottom: '1rem' }}>
+        <div className="error-message">
           {error}
           <button 
             onClick={refreshTodos} 
             className="btn btn-secondary"
-            style={{ marginLeft: '1rem' }}
           >
             再読み込み
           </button>
